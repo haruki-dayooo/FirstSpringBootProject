@@ -29,4 +29,8 @@ public class UserRepository {
     Optional<User> checkLoginUser(String userId, String password) {
         return users.stream().filter(user -> user.getUserId().equals(userId) && user.getPassword().equals(password)).findFirst();
     }
+
+    void create(User user) {
+        users.add(user);
+    }
 }

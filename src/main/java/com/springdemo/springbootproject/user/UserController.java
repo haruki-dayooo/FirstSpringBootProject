@@ -31,12 +31,19 @@ public class UserController {
         return user.get();
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("/create")
+    void create(@RequestBody User user) {
+        userRepository.create(user);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping("/login")
-    User login(@RequestParam String userId, @RequestParam String password) {
-        Optional<User> user = userRepository.checkLoginUser(userId, password);
-        if (user.isEmpty()) {
+    User login(@RequestBody User user) {
+        Optional<User> checkLogin = userRepository.checkLoginUser(user.getUserId(), user.getPassword());
+        if (checkLogin.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return user.get();
+        return checkLogin.get();
     }
 }
