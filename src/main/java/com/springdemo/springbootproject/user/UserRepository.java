@@ -12,7 +12,7 @@ public class UserRepository {
 
     private List<User> users = new ArrayList<>();
 
-    List<User> findAll() {
+    public List<User> findAll() {
         return users;
     }
 
@@ -22,15 +22,15 @@ public class UserRepository {
         users.add(new User("hoadoan", "1", "Hoa Doan", "US"));
     }
 
-    Optional<User> findById(String userId) {
+    public Optional<User> findById(String userId) {
         return users.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
     }
 
-    Optional<User> checkLoginUser(String userId, String password) {
+    public Optional<User> checkLoginUser(String userId, String password) {
         return users.stream().filter(user -> user.getUserId().equals(userId) && user.getPassword().equals(password)).findFirst();
     }
 
-    void create(User user) {
+    public void create(User user) {
         users.add(user);
     }
 }
