@@ -1,9 +1,22 @@
 package com.springdemo.springbootproject.user;
 
+import jakarta.persistence.*;
+
+@Entity(name = "tblusers")
+@Table(name = "tblusers")
 public class User {
+
+    @Id
+    @Column(name = "userid", updatable = false, nullable = false, columnDefinition = "TEXT")
     private String userId;
+
+    @Column(name = "password", columnDefinition = "TEXT")
     private String password;
+
+    @Column(name = "fullname", columnDefinition = "TEXT")
     private String fullName;
+
+    @Column(name = "roleid", columnDefinition = "TEXT")
     private String roleId;
 
     public User() {
