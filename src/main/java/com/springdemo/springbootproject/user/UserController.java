@@ -24,28 +24,33 @@ public class UserController {
         return userService.findAll();
     }
 
-//    @GetMapping("/find")
-//    User findById(@RequestParam String userId) {
-//        Optional<User> user = userService.findById(userId);
-//        if (user.isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//        }
-//        return user.get();
-//    }
-//
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    @PostMapping("/create")
-//    void create(@RequestBody User user) {
-//        userService.create(user);
-//    }
-//
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    @PostMapping("/login")
-//    User login(@RequestBody User user) {
-//        Optional<User> checkLogin = userService.checkLoginUser(user.getUserId(), user.getPassword());
-//        if (checkLogin.isEmpty()) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//        }
-//        return checkLogin.get();
-//    }
+    @GetMapping("/find")
+    User findById(@RequestParam String userId) {
+        Optional<User> user = userService.findById(userId);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return user.get();
+    }
+
+    @GetMapping("/search")
+    List<User> searchByFullName(@RequestParam String search) {
+        return userService.searchByFullName(search);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("/create")
+    void create(@RequestBody User user) {
+        userService.save(user);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("/login")
+    User login(@RequestBody User user) {
+        Optional<User> checkLogin = userService.checkLoginUser(user.getUserId(), user.getPassword());
+        if (checkLogin.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return checkLogin.get();
+    }
 }
