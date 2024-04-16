@@ -49,7 +49,7 @@ public class UserController {
     User login(@RequestBody User user) {
         Optional<User> checkLogin = userService.checkLoginUser(user.getUserId(), user.getPassword());
         if (checkLogin.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new IllegalStateException("Incorrect UserID or Password");
         }
         return checkLogin.get();
     }
