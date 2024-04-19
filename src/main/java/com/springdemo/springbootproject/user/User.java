@@ -1,5 +1,6 @@
 package com.springdemo.springbootproject.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity(name = "tblusers")
@@ -11,6 +12,7 @@ public class User {
     private String userId;
 
     @Column(name = "password", columnDefinition = "TEXT")
+    @JsonIgnore
     private String password;
 
     @Column(name = "fullname", columnDefinition = "TEXT")
@@ -37,6 +39,7 @@ public class User {
         this.userId = userId;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
