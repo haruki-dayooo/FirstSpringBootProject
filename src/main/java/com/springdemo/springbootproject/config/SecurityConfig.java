@@ -16,7 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
+    public InMemoryUserDetailsManager userDetailsService() { //create in-memory login user
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("user")
                 .password("1")
@@ -29,18 +29,6 @@ public class SecurityConfig {
                 .build();
         return new InMemoryUserDetailsManager(user,admin);
     }
-
-    @Bean
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        http
-                .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().hasRole("ADMIN")
-                )
-                .httpBasic(withDefaults());
-        return http.build();
-    }
-
     @Bean
     public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
         http
@@ -48,6 +36,16 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults());
+        return http.build();
+    }
+    @Bean
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception { //only admin role can access /api/**
+        http
+                .securityMatcher("/api/**")
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().hasRole("ADMIN")
+                )
+                .httpBasic(withDefaults());
         return http.build();
     }
 }

@@ -2,10 +2,22 @@ package com.springdemo.springbootproject.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "tblusers")
 @Table(name = "tblusers")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @Column(name = "userid", updatable = false, nullable = false, columnDefinition = "TEXT")
@@ -21,22 +33,9 @@ public class User {
     @Column(name = "roleid", columnDefinition = "TEXT")
     private String roleId;
 
-    public User() {
-    }
-
-    public User(String userId, String password, String fullName, String roleId) {
-        this.userId = userId;
-        this.password = password;
-        this.fullName = fullName;
-        this.roleId = roleId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(roleId));
     }
 
     @JsonIgnore
@@ -44,23 +43,28 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return userId;
     }
 
-    public String getFullName() {
-        return fullName;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
 
-    public String getRoleId() {
-        return roleId;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
