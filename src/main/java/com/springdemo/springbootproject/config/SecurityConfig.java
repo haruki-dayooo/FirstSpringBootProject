@@ -25,45 +25,45 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() { //create in-memory login user
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("1")
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("1")
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user,admin);
-    }
-    @Bean
-    public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().authenticated()
-                )
-                .formLogin(withDefaults());
-        return http.build();
-    }
-    @Bean
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception { //only admin role can access /api/**
-        http
-                .securityMatcher("/api/**")
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().hasRole("ADMIN")
-                )
-                .httpBasic(withDefaults());
-        return http.build();
-    }
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsService() { //create in-memory login user
+//        UserDetails user = User.withDefaultPasswordEncoder()
+//                .username("user")
+//                .password("1")
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = User.withDefaultPasswordEncoder()
+//                .username("admin")
+//                .password("1")
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user,admin);
+//    }
+//    @Bean
+//    public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(withDefaults());
+//        return http.build();
+//    }
+//    @Bean
+//    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception { //only admin role can access /api/**
+//        http
+//                .securityMatcher("/api/**")
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().hasRole("ADMIN")
+//                )
+//                .httpBasic(withDefaults());
+//        return http.build();
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("")
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/**")
                 .permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

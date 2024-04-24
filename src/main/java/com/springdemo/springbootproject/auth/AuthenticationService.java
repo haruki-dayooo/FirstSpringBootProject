@@ -32,7 +32,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUserId(), request.getPassword()));
-        var user = userRepository.findById(request.getUserId()).orElseThrow();
+        var user = userRepository.checkAuthenticate(request.getUserId(), request.getPassword());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
