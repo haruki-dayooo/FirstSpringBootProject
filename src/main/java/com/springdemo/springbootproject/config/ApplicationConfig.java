@@ -23,7 +23,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> repository.findById(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> repository.findByUserId(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
